@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import SignIn from './page/login';
 import SignUp from './page/register';
+import Album from './page/landing';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 // Import the functions you need from the SDKs you need
 
@@ -12,7 +13,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<div>This is Landing Page</div>}></Route>
+        <Route path="/" element={<Album></Album>}></Route>
         <Route path="/login" element={<SignIn></SignIn>}></Route>
         <Route path="/register" element={<SignUp></SignUp>}></Route>
         <Route path="/*" element={<div>Not Found 404</div>}></Route>
