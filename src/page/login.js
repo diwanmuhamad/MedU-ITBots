@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {firebaseAuth} from '../firebase';
-import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useNavigate} from 'react-router-dom';
+import {  setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "firebase/auth";
 
 function Copyright(props) {
   return (
@@ -53,8 +53,23 @@ export default function SignIn() {
         const errorCode = error.code;
         const errorMessage = error.message;
     });
-  };
 
+    // setPersistence(firebaseAuth, browserSessionPersistence)
+    //   .then(() => {
+    //     // Existing and future Auth states are now persisted in the current
+    //     // session only. Closing the window would clear any existing state even
+    //     // if a user forgets to sign out.
+    //     // ...
+    //     // New sign-in will be persisted with session persistence.
+    //     return signInWithEmailAndPassword(firebaseAuth, data.get('email'), data.get('password'));
+    //   })
+    //   .catch((error) => {
+    //     // Handle Errors here.
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //   });
+  };
+  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

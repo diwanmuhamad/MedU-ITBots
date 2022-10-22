@@ -5,11 +5,14 @@ import SignIn from './page/login';
 import SignUp from './page/register';
 import Album from './page/landing';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+
+
 // Import the functions you need from the SDKs you need
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+ 
   <React.StrictMode>
     <BrowserRouter>
       <Routes>

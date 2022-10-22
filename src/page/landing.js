@@ -18,7 +18,11 @@ import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate} from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { firebaseAuth } from '../firebase';
+import { firebaseAuth, firebaseDb } from '../firebase';
+import { getDocs, collection, doc, setDoc } from "firebase/firestore";
+
+
+
 
 
 
@@ -57,7 +61,9 @@ const theme = createTheme({
 
 export default function Album() {
     const navigate = useNavigate()
+    const [listHospital, setListHospital] = React.useState([]);
     const [isLogin, setIsLogin] = React.useState(false);
+
    React.useEffect(()=> {
     onAuthStateChanged(firebaseAuth, (user) => {
         if (user) {
@@ -72,6 +78,16 @@ export default function Album() {
           setIsLogin(false)
         }
       });
+
+      async function getCities(db) {
+        const citiesCol = collection(db, 'hospital');
+        const citySnapshot = await getDocs(citiesCol);
+        const cityList = citySnapshot.docs.map(doc => doc.data());
+        return cityList;
+      }
+      
+      getCities(firebaseDb).then(value=>{setListHospital(value)});
+      // addData();
    }, [])
 
    const handleLogout = () => {
@@ -82,6 +98,18 @@ export default function Album() {
         // An error happened.
         console.log(error)
       });
+   }
+
+   const addData = () => {
+      const hospitalData = {
+        name:"RS Merakyat",
+        Address:"Jl Tomcat",
+        Country:"Symbiot",
+        Description:"Good hospital",
+
+      }
+      const cityRef = doc(firebaseDb, 'hospital', "RSM");
+      setDoc(cityRef, hospitalData, { merge: true });
    }
   return (
     <ThemeProvider theme={theme}>
@@ -144,7 +172,7 @@ export default function Album() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
+            {listHospital.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -156,11 +184,13 @@ export default function Album() {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      {card.name}
+                    </Typography>
+                    <Typography sx={{marginBottom: "20px", fontSize: "12px"}}>
+                      {card.Country}, {card.Address}
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
+                      {card.Description.substring(0,50)}...
                     </Typography>
                   </CardContent>
                   <CardActions>
